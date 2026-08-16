@@ -1,0 +1,153 @@
+# # Build the release packages and attach them to the GitHub release.
+#
+#   Fedora   .rpm  Officially supported.
+#   Windows  .exe  Portable, unofficial and unsupported.
+#   Android  .apk  Sideloadable, unofficial and unsupported.
+#
+
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # ## The official Fedora package.
+  # The container is what makes it a Fedora package, the runner itself is Ubuntu. It is the
+  # oldest supported release, which installs on the newer ones too, so bump it at end of life.
+  fedora:
+    runs-on: ubuntu-latest
+    container: fedora:43
+    steps:
+      # The checkout needs git, which the container does not ship.
+      - name: Install the build dependencies
+        run: >
+          dnf install -y git gcc gcc-c++ make file pkgconf-pkg-config
+          webkit2gtk4.1-devel openssl-devel librsvg2-devel libxdo-devel
+
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install the Tauri CLI
+        run: cargo install tauri-cli --version "^2" --locked
+
+      - name: Build the RPM
+        working-directory: src-tauri
+        run: cargo tauri build --bundles rpm
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: fedora-rpm
+          path: src-tauri/target/release/bundle/rpm/*.rpm
+          if-no-files-found: error
+
+  # ## The unofficial Windows executable.
+  # Portable, no installer.
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install the Tauri CLI
+        run: cargo install tauri-cli --version "^2" --locked
+
+      - name: Build the executable
+        working-directory: src-tauri
+        run: cargo tauri build --no-bundle
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: windows-exe
+          path: src-tauri/target/release/Minoo.exe
+          if-no-files-found: error
+
+  # ## The unofficial Android package.
+  # Needs to run the init first, as we have no stored gen for it in the repo.
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android, x86_64-linux-android
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install the Tauri CLI
+        run: cargo install tauri-cli --version "^2" --locked
+
+      # The CLI wants NDK_HOME, the runner calls that same path ANDROID_NDK_ROOT.
+      - name: Point the CLI at the NDK
+        run: echo "NDK_HOME=$ANDROID_NDK_ROOT" >> "$GITHUB_ENV"
+
+      # Android has its own icon, drawn for the shapes the launcher cuts out of it, so it
+      # takes the place of the desktop one before the icons are generated. The icons only
+      # land in the generated project once it exists, so they come after the init. The
+      # ios-color names the color behind the icon on Android as well, white without it.
+      - name: Generate the Android project
+        working-directory: src-tauri
+        run: |
+          mv -f ../app-icon_android.png ../app-icon.png
+          cargo tauri android init --ci --skip-targets-install
+          cargo tauri icon ../app-icon.png --ios-color "#002b36"
+
+      # 64 bit ARM for the phones, 64 bit x86 for the emulators.
+      - name: Build the APK
+        working-directory: src-tauri
+        run: cargo tauri android build --apk --target aarch64 --target x86_64
+
+      # Signed with new key every build, so needs a reinstall.
+      - name: Sign the APK
+        run: |
+          keystore="$RUNNER_TEMP/throwaway.jks"
+          keytool -genkeypair -noprompt -alias minoo -dname "CN=Minoo" \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -keystore "$keystore" -storepass throwaway
+
+          tools=$(ls -d "$ANDROID_HOME"/build-tools/* | tail -1)
+          unsigned=$(find src-tauri/gen/android -name "*-release-unsigned.apk" | head -1)
+
+          "$tools/zipalign" -p -f 4 "$unsigned" Minoo.apk
+          "$tools/apksigner" sign --ks "$keystore" --ks-pass pass:throwaway Minoo.apk
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: android-apk
+          path: Minoo.apk
+          if-no-files-found: error
+
+  # ## Attach whatever was built to the release.
+  # Only Fedora has to succeed.
+  publish:
+    needs: [fedora, windows, android]
+    if: github.event_name == 'release' && !cancelled() && needs.fedora.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: packages
+          merge-multiple: true
+
+      - name: Upload to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release upload "${{ github.event.release.tag_name }}" packages/* --clobber

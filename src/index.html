@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Minoo - Organised, Focused, Private</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="/main.js" defer></script>
+  </head>
+
+  <body>
+    <!-- The custom titlebar. -->
+    <div data-tauri-drag-region id="titlebar">
+      <div class="logo"></div>
+      <div class="button" id="titlebar-minimize" role="button" aria-label="Minimize">―</div>
+      <div class="button" id="titlebar-maximize" role="button" aria-label="Maximize">◻</div>
+      <div class="button" id="titlebar-close" role="button" aria-label="Close">✕</div>
+    </div>
+
+    <div id="app-container">
+      <!-- ## The sidebar. -->
+      <div id="sidebar" class="hidden">
+        <div id="last-sync-date">No Sync</div>
+        <button id="open-settings" title="Settings">☰</button>
+        <button id="new-note" title="New note">+</button>
+        <button id="new-folder" title="New folder">
+          <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path
+              d="M2 5.2C2 4.54 2.54 4 3.2 4h3.4l1.9 2h6.3c.66 0 1.2.54 1.2 1.2v5.6c0 .66-.54 1.2-1.2 1.2H3.2c-.66 0-1.2-.54-1.2-1.2V5.2Z"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <button id="close-sidebar" title="Close sidebar">
+          <!-- A minimal double chevron pointing the way the sidebar slides out. -->
+          <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path
+              d="M9.5 4.5 5 9l4.5 4.5M14 4.5 9.5 9l4.5 4.5"
+              stroke="currentColor"
+              stroke-width="1.3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <nav id="sidebar-notes" aria-label="Note navigation"></nav>
+      </div>
+      <div id="sidebar-resize"></div>
+
+      <!-- ## The editor, CodeMirror mounts itself inside this container. -->
+      <div id="editor"></div>
+    </div>
+
+    <!-- ## The settings modal. -->
+    <div id="settings" class="modal">
+      <div id="settings-window-bg" class="modal-bg"></div>
+      <div class="modal-window">
+        <div class="window-bar">
+          <div
+            id="settings-window-close"
+            class="button"
+            role="button"
+            aria-label="Close settings"
+          >
+            ✕
+          </div>
+        </div>
+        <div class="content-area" tabindex="-1">
+          <h1>Settings</h1>
+          <br />
+
+          <section>
+            <h2>Appearance</h2>
+            <hr />
+            <h3>Theme</h3>
+            <p class="hint">The color scheme for the whole app.</p>
+            <select id="theme-select">
+              <option value="GeniusGreen">Genius Green</option>
+              <option value="PerfectPurple">Perfect Purple</option>
+              <option value="BeautifulBlue">Beautiful Blue</option>
+              <option value="BoringBlack">Boring Black</option>
+            </select>
+
+            <h3>Interface Font</h3>
+            <p class="hint">
+              The font for the whole app: sidebar, menus, and also notes if you do not set a
+              font for the editor.
+            </p>
+            <input id="ui-font-family-input" type="text" placeholder="e.g. Georgia, serif" />
+
+            <h3>Reset</h3>
+            <p class="hint">Put every setting back to its default. Notes are untouched.</p>
+            <button id="reset-settings" type="button">Reset settings</button>
+          </section>
+
+          <section>
+            <h2>Editor</h2>
+            <hr />
+            <h3>Show Line Numbers</h3>
+            <p class="hint">Number every line of the note, like a code editor does.</p>
+            <label class="checkbox-container">
+              <input id="toggle-line-numbers" type="checkbox" />
+              <span class="slider"></span>
+            </label>
+
+            <div class="grid">
+              <div>
+                <h3>Font Size</h3>
+                <p class="hint">The height of the text.</p>
+                <input id="font-size-input" type="text" placeholder="e.g. 16px" />
+              </div>
+              <div>
+                <h3>Font Family</h3>
+                <p class="hint">A font applied to the editor text.</p>
+                <input
+                  id="font-family-input"
+                  type="text"
+                  placeholder="e.g. Menlo, monospace"
+                />
+              </div>
+              <div>
+                <h3>Line Height</h3>
+                <p class="hint">The space between lines.</p>
+                <input id="line-height-input" type="text" placeholder="e.g. 1.25" />
+              </div>
+              <div>
+                <h3>Word Spacing</h3>
+                <p class="hint">
+                  Extra space between words.
+                  <small
+                    >(Caret will have an offset bug on macOS and iOS due to WebKit.)</small
+                  >
+                </p>
+                <input id="word-spacing-input" type="text" placeholder="e.g. 2px" />
+              </div>
+              <div>
+                <h3>Line Width</h3>
+                <p class="hint">The maximum width of the text, centered in wider windows.</p>
+                <input id="line-width-input" type="text" placeholder="e.g. 700px" />
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>Interface</h2>
+            <hr />
+            <h3>Show Sidebar at Startup</h3>
+            <p class="hint">
+              Start the app showing the sidebar with your notes already open.
+            </p>
+            <label class="checkbox-container">
+              <input id="toggle-sidebar-startup" type="checkbox" />
+              <span class="slider"></span>
+            </label>
+
+            <h3>On Opening a Note</h3>
+            <p class="hint">
+              Whether opening a note focuses the editor, and where the caret lands.
+            </p>
+            <select id="open-note-focus-select">
+              <option value="none">Do nothing</option>
+              <option value="start">Focus caret on start of note</option>
+              <option value="end">Focus caret on end of note</option>
+            </select>
+
+            <h3>Window Controls</h3>
+            <p class="hint">
+              The style of the minimize, maximize, and close buttons. Automatic follows the
+              system.
+            </p>
+            <select id="window-controls-select">
+              <option value="auto">Automatic</option>
+              <option value="macos">macOS</option>
+              <option value="agnostic">OS Agnostic</option>
+            </select>
+          </section>
+
+          <section>
+            <h2>Sync</h2>
+            <hr />
+            <h3>Sync With Paired Devices</h3>
+            <p class="hint">
+              Keep notes identical across your own devices. Syncing happens directly between
+              them on your network, no cloud or account involved.
+            </p>
+            <label class="checkbox-container">
+              <input id="toggle-sync" type="checkbox" />
+              <span class="slider"></span>
+            </label>
+            <br />
+            <button id="sync-now" type="button">Sync now</button>
+
+            <h3>Device Name</h3>
+            <p class="hint">How this device introduces itself to your other devices.</p>
+            <input
+              id="sync-device-name-input"
+              type="text"
+              placeholder="e.g. Living Room Mac"
+            />
+
+            <h3>Paired Devices</h3>
+            <p class="hint">The devices this one trusts and syncs with.</p>
+            <div id="sync-paired-devices"></div>
+            <div class="group">
+              <button id="sync-find-devices" type="button">Find devices to pair</button>
+            </div>
+            <div id="sync-found-devices"></div>
+            <hr />
+
+            <h3>Pair by Address</h3>
+            <p class="hint">
+              If a device is not found automatically, type the address shown in this section
+              on that device to pair with it directly.
+            </p>
+            <p id="sync-device-address"></p>
+            <div class="group">
+              <input id="sync-pair-address" type="text" placeholder="e.g. 192.168.1.23" />
+              <button id="sync-pair-by-address" type="button">Pair</button>
+            </div>
+          </section>
+
+          <section>
+            <h2>Shortcuts</h2>
+            <hr />
+            <p class="hint">
+              Write shortcuts like "Cmd/Ctrl+Shift+P" or "Option/Alt+Cmd/Ctrl+C", where Cmd
+              means ⌘ and Option means ⌥ on Mac. Option (⌥) and Alt act as the same key. Leave
+              a field empty to turn that shortcut off.
+            </p>
+            <div id="shortcuts-settings" class="grid"></div>
+          </section>
+
+          <section>
+            <h2>Minoo</h2>
+            <hr />
+            <p class="hint">
+              Settings are saved to a settings.toml file. Notes are stored as .md Markdown
+              files. You can easily back up your notes and copy your settings to another
+              device. Restart Minoo when you change note and setting files directly.
+            </p>
+            <div class="group">
+              <section>
+                <button id="open-settings-location" type="button">
+                  Config file location
+                </button>
+                <button id="open-notes-location" type="button">Open notes folder</button>
+              </section>
+            </div>
+          </section>
+
+          <p id="app-version"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ## The custom context menu. -->
+    <!-- The modules toggle its sections to fit the target. -->
+    <div id="context-menu">
+      <div id="context-menu-sidebar">
+        <div id="context-menu-rename" class="item">Rename <span>F2</span></div>
+        <div id="context-menu-delete" class="item">Delete <span>Del</span></div>
+        <div id="context-menu-restore" class="item">Restore</div>
+        <div id="context-menu-delete-permanently" class="item">Delete Permanently</div>
+        <div id="context-menu-empty-trash" class="item">Empty Trash <span>Del</span></div>
+        <div id="context-menu-new-note" class="item">
+          New Note <span data-shortcut="new-note">⌘/Ctrl+N</span>
+        </div>
+        <div id="context-menu-new-folder" class="item">
+          New Folder <span data-shortcut="new-folder">⌘/Ctrl+Shift+N</span>
+        </div>
+        <hr />
+      </div>
+      <div id="context-menu-editor">
+        <div id="context-menu-undo" class="item">Undo <span>⌘/Ctrl+Z</span></div>
+        <div id="context-menu-redo" class="item">Redo <span>Shift+⌘/Ctrl+Z</span></div>
+        <hr />
+        <div id="context-menu-cut" class="item">Cut <span>⌘/Ctrl+X</span></div>
+        <div id="context-menu-copy" class="item">Copy <span>⌘/Ctrl+C</span></div>
+        <div id="context-menu-paste" class="item">Paste <span>⌘/Ctrl+V</span></div>
+        <div id="context-menu-select-all" class="item">Select All <span>⌘/Ctrl+A</span></div>
+        <hr />
+      </div>
+      <div id="context-menu-general">
+        <div id="toggle-sidebar" class="item">
+          Sidebar <span data-shortcut="sidebar">⌘/Ctrl+B</span>
+        </div>
+        <div id="open-search" class="item">
+          Search Note <span data-shortcut="search">⌘/Ctrl+F</span>
+        </div>
+        <div id="open-search-all" class="item">
+          Search All Notes <span data-shortcut="search-all">⌘/Ctrl+Shift+F</span>
+        </div>
+        <div id="toggle-settings" class="item">
+          Settings <span data-shortcut="settings">⌘/Ctrl+,</span>
+        </div>
+        <div id="toggle-command-palette" class="item">
+          Command Palette <span data-shortcut="command-palette">⌘/Ctrl+Shift+P</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ## The picker overlays for the command palette and search. -->
+    <div id="command-palette" class="picker">
+      <div class="picker-window">
+        <!-- Spellcheck and autocorrect popups steal the arrow keys, so they stay off. -->
+        <input
+          id="command-palette-input"
+          placeholder="Type a command..."
+          autocomplete="one-time-code"
+          spellcheck="false"
+          autocorrect="off"
+          autocapitalize="off"
+        />
+        <div id="command-palette-results" class="picker-results"></div>
+      </div>
+    </div>
+
+    <div id="search" class="picker">
+      <div class="picker-window">
+        <!-- Spellcheck and autocorrect popups steal the arrow keys, so they stay off. -->
+        <input
+          id="search-input"
+          placeholder="Search this note..."
+          autocomplete="one-time-code"
+          spellcheck="false"
+          autocorrect="off"
+          autocapitalize="off"
+        />
+        <div id="search-results" class="picker-results"></div>
+      </div>
+    </div>
+
+    <!-- ## The short-lived message toast, mostly for errors. -->
+    <div id="toast" role="status">
+      <span id="toast-message"></span>
+    </div>
+
+    <!-- ## The confirm dialog. -->
+    <div id="confirm" role="alertdialog" aria-modal="true">
+      <div id="confirm-bg"></div>
+      <div class="confirm-window">
+        <p id="confirm-message"></p>
+        <p class="confirm-buttons">
+          <button id="confirm-cancel" type="button">Cancel</button>
+          <button id="confirm-ok" type="button">Delete</button>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

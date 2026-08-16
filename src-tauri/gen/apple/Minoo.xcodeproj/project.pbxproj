@@ -1,0 +1,524 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		032338145D09D085915C7D88 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A68B45384DAE3D76569730B /* main.mm */; };
+		04951CED4AAC3449B05FE60E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C8531A0680D9E95DE67EFD3 /* Assets.xcassets */; };
+		3107AAB0751C92F6D1138059 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 106D7667DD244EE194F66B64 /* Security.framework */; };
+		4E9F8BFE77C76EA786BE6498 /* libapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EFA158392E5109F79D74A0A /* libapp.a */; };
+		500365B9F22F852C8B94B041 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FF778F9FEFFDFAB1F97804B /* UIKit.framework */; };
+		5B9674E01E3075825DAF6630 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A4B929E21B5E78A8319A04 /* WebKit.framework */; };
+		9220F1E82AB170563780DA37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24F45B5C146393A1E2CB0859 /* LaunchScreen.storyboard */; };
+		9D91A5A6ABC993BB36BEB28C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 782625E6A3BF6A935585BB92 /* CoreGraphics.framework */; };
+		A73D68D0DD602D6017D5DA6B /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 1C14E6296F0DF8799F3B81D9 /* assets */; };
+		BA9D60D2EAE2CBA63F2913CD /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1AF92CBC8D9E09CA21C0BF4 /* Metal.framework */; };
+		CF8B5248DBE7F90FB8F33627 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015179AFDF074FBFBF9C82D6 /* QuartzCore.framework */; };
+		F766A5C20E378B9D72ED34B1 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C02FBAA5D90367A17808611 /* MetalKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		015179AFDF074FBFBF9C82D6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		02F695C49BCBAE2118D973DA /* notes.rs */ = {isa = PBXFileReference; path = notes.rs; sourceTree = "<group>"; };
+		106D7667DD244EE194F66B64 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		1C14E6296F0DF8799F3B81D9 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
+		23A4B929E21B5E78A8319A04 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		24F45B5C146393A1E2CB0859 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		25A4DD7E75772D71A48BA2CE /* Minoo_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Minoo_iOS.entitlements; sourceTree = "<group>"; };
+		2D617CF9F9EF71F7E194D0D1 /* settings.rs */ = {isa = PBXFileReference; path = settings.rs; sourceTree = "<group>"; };
+		2FF778F9FEFFDFAB1F97804B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		3C02FBAA5D90367A17808611 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		510655B7BC5CE939A978B38A /* window.rs */ = {isa = PBXFileReference; path = window.rs; sourceTree = "<group>"; };
+		62CB576C0ADDF23383721953 /* lib.rs */ = {isa = PBXFileReference; path = lib.rs; sourceTree = "<group>"; };
+		782625E6A3BF6A935585BB92 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		7C4E94D759EDA4864B94FFAF /* crypto.rs */ = {isa = PBXFileReference; path = crypto.rs; sourceTree = "<group>"; };
+		8284C76D0F2DD28F9FBB54CE /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
+		942E798738BBFEFFA2D56523 /* menu.rs */ = {isa = PBXFileReference; path = menu.rs; sourceTree = "<group>"; };
+		9A68B45384DAE3D76569730B /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		9C8531A0680D9E95DE67EFD3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9EFA158392E5109F79D74A0A /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
+		A2CC730970630514916C3889 /* main.rs */ = {isa = PBXFileReference; path = main.rs; sourceTree = "<group>"; };
+		B1AF92CBC8D9E09CA21C0BF4 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		B98A45A9B857CFC83B9AECCF /* engine.rs */ = {isa = PBXFileReference; path = engine.rs; sourceTree = "<group>"; };
+		CA5E761621F6F3FAE232D3E9 /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
+		D40DAD6D5B1BB6B61FEC72EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DB1FAAD62697190735F2F782 /* mod.rs */ = {isa = PBXFileReference; path = mod.rs; sourceTree = "<group>"; };
+		E5FD792A633438D53520E861 /* network.rs */ = {isa = PBXFileReference; path = network.rs; sourceTree = "<group>"; };
+		EBA1D1C732FB9D6C36D04C01 /* Minoo_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Minoo_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF5A3BD5C5B04E4E266BA189 /* bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bindings.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2278579F5C0339E827AC41B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4E9F8BFE77C76EA786BE6498 /* libapp.a in Frameworks */,
+				9D91A5A6ABC993BB36BEB28C /* CoreGraphics.framework in Frameworks */,
+				BA9D60D2EAE2CBA63F2913CD /* Metal.framework in Frameworks */,
+				F766A5C20E378B9D72ED34B1 /* MetalKit.framework in Frameworks */,
+				CF8B5248DBE7F90FB8F33627 /* QuartzCore.framework in Frameworks */,
+				3107AAB0751C92F6D1138059 /* Security.framework in Frameworks */,
+				500365B9F22F852C8B94B041 /* UIKit.framework in Frameworks */,
+				5B9674E01E3075825DAF6630 /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		01DA57C9725B8C80D9025B83 /* release */ = {
+			isa = PBXGroup;
+			children = (
+				CA5E761621F6F3FAE232D3E9 /* libapp.a */,
+			);
+			path = release;
+			sourceTree = "<group>";
+		};
+		355B8CCA39D41E0EE5B46D74 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				782625E6A3BF6A935585BB92 /* CoreGraphics.framework */,
+				9EFA158392E5109F79D74A0A /* libapp.a */,
+				B1AF92CBC8D9E09CA21C0BF4 /* Metal.framework */,
+				3C02FBAA5D90367A17808611 /* MetalKit.framework */,
+				015179AFDF074FBFBF9C82D6 /* QuartzCore.framework */,
+				106D7667DD244EE194F66B64 /* Security.framework */,
+				2FF778F9FEFFDFAB1F97804B /* UIKit.framework */,
+				23A4B929E21B5E78A8319A04 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		48503119DBFE170C72CF1925 /* bindings */ = {
+			isa = PBXGroup;
+			children = (
+				EF5A3BD5C5B04E4E266BA189 /* bindings.h */,
+			);
+			path = bindings;
+			sourceTree = "<group>";
+		};
+		57AE80D49DDB2BFC144EE161 /* Externals */ = {
+			isa = PBXGroup;
+			children = (
+				F6A2C56693DD07C6F836E07F /* arm64 */,
+			);
+			path = Externals;
+			sourceTree = "<group>";
+		};
+		584D6B63C616965F7D464558 /* Minoo_iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D40DAD6D5B1BB6B61FEC72EE /* Info.plist */,
+				25A4DD7E75772D71A48BA2CE /* Minoo_iOS.entitlements */,
+			);
+			path = Minoo_iOS;
+			sourceTree = "<group>";
+		};
+		64977B7A9D782C12CCA5703B = {
+			isa = PBXGroup;
+			children = (
+				1C14E6296F0DF8799F3B81D9 /* assets */,
+				9C8531A0680D9E95DE67EFD3 /* Assets.xcassets */,
+				24F45B5C146393A1E2CB0859 /* LaunchScreen.storyboard */,
+				57AE80D49DDB2BFC144EE161 /* Externals */,
+				584D6B63C616965F7D464558 /* Minoo_iOS */,
+				A75AB899E3CB3CE06817E2E9 /* Sources */,
+				8DD6E997EFDFE4F72DA1E5DE /* src */,
+				355B8CCA39D41E0EE5B46D74 /* Frameworks */,
+				AAE8CB94E2ED402F32416DC8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8DD6E997EFDFE4F72DA1E5DE /* src */ = {
+			isa = PBXGroup;
+			children = (
+				62CB576C0ADDF23383721953 /* lib.rs */,
+				A2CC730970630514916C3889 /* main.rs */,
+				942E798738BBFEFFA2D56523 /* menu.rs */,
+				02F695C49BCBAE2118D973DA /* notes.rs */,
+				2D617CF9F9EF71F7E194D0D1 /* settings.rs */,
+				510655B7BC5CE939A978B38A /* window.rs */,
+				C778740E60C1166D70C3370F /* sync */,
+			);
+			name = src;
+			path = ../../src;
+			sourceTree = "<group>";
+		};
+		9C0EAF50FD80F4D829A024FF /* debug */ = {
+			isa = PBXGroup;
+			children = (
+				8284C76D0F2DD28F9FBB54CE /* libapp.a */,
+			);
+			path = debug;
+			sourceTree = "<group>";
+		};
+		A75AB899E3CB3CE06817E2E9 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				B07A8547993EF547D7A9436F /* Minoo */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		AAE8CB94E2ED402F32416DC8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EBA1D1C732FB9D6C36D04C01 /* Minoo_iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B07A8547993EF547D7A9436F /* Minoo */ = {
+			isa = PBXGroup;
+			children = (
+				9A68B45384DAE3D76569730B /* main.mm */,
+				48503119DBFE170C72CF1925 /* bindings */,
+			);
+			path = Minoo;
+			sourceTree = "<group>";
+		};
+		C778740E60C1166D70C3370F /* sync */ = {
+			isa = PBXGroup;
+			children = (
+				7C4E94D759EDA4864B94FFAF /* crypto.rs */,
+				B98A45A9B857CFC83B9AECCF /* engine.rs */,
+				DB1FAAD62697190735F2F782 /* mod.rs */,
+				E5FD792A633438D53520E861 /* network.rs */,
+			);
+			path = sync;
+			sourceTree = "<group>";
+		};
+		F6A2C56693DD07C6F836E07F /* arm64 */ = {
+			isa = PBXGroup;
+			children = (
+				9C0EAF50FD80F4D829A024FF /* debug */,
+				01DA57C9725B8C80D9025B83 /* release */,
+			);
+			path = arm64;
+			sourceTree = "<group>";
+		};
+		"TEMP_8A0D0EBF-2CA4-48F1-9079-ACFD419B0234" /* x86_64 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = x86_64;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		045FFAC64B2F3D9FCEAC16B4 /* Minoo_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 654D335650DA816A83297E70 /* Build configuration list for PBXNativeTarget "Minoo_iOS" */;
+			buildPhases = (
+				53CEDB8975B6B3F7D2241C7B /* Build Rust Code */,
+				3CCC8A674B852BF6974EE2D5 /* Sources */,
+				203DAB5668B7EFB95E3727B1 /* Resources */,
+				2278579F5C0339E827AC41B5 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Minoo_iOS;
+			packageProductDependencies = (
+			);
+			productName = Minoo_iOS;
+			productReference = EBA1D1C732FB9D6C36D04C01 /* Minoo_iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D9965AFFD5A76DB5030236C8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					045FFAC64B2F3D9FCEAC16B4 = {
+						DevelopmentTeam = 9C7HUS6735;
+					};
+				};
+			};
+			buildConfigurationList = 08F02AD857382CBECA55C2A1 /* Build configuration list for PBXProject "Minoo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 64977B7A9D782C12CCA5703B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = AAE8CB94E2ED402F32416DC8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				045FFAC64B2F3D9FCEAC16B4 /* Minoo_iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		203DAB5668B7EFB95E3727B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04951CED4AAC3449B05FE60E /* Assets.xcassets in Resources */,
+				9220F1E82AB170563780DA37 /* LaunchScreen.storyboard in Resources */,
+				A73D68D0DD602D6017D5DA6B /* assets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		53CEDB8975B6B3F7D2241C7B /* Build Rust Code */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build Rust Code";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Externals/x86_64/${CONFIGURATION}/libapp.a",
+				"$(SRCROOT)/Externals/arm64/${CONFIGURATION}/libapp.a",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cargo tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths \"${FRAMEWORK_SEARCH_PATHS:?}\" --header-search-paths \"${HEADER_SEARCH_PATHS:?}\" --gcc-preprocessor-definitions \"${GCC_PREPROCESSOR_DEFINITIONS:-}\" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3CCC8A674B852BF6974EE2D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				032338145D09D085915C7D88 /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		117A2CFDE1585EBD7027C96F /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = (
+					arm64,
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Minoo_iOS/Minoo_iOS.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 9C7HUS6735;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = Minoo_iOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
+				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.minoo.app;
+				PRODUCT_NAME = "Minoo";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = debug;
+		};
+		3F7D5DAEA7BD85E8F77D4A5E /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = release;
+		};
+		4432992AB5A572D4D9C01FA7 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = (
+					arm64,
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Minoo_iOS/Minoo_iOS.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 9C7HUS6735;
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = Minoo_iOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=arm64]" = "$(inherited) $(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
+				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = "$(inherited) $(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION) $(SDKROOT)/usr/lib/swift $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(PLATFORM_NAME) $(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.0/$(PLATFORM_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.minoo.app;
+				PRODUCT_NAME = "Minoo";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = release;
+		};
+		72DB1B6FB7B60F80F0514203 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		08F02AD857382CBECA55C2A1 /* Build configuration list for PBXProject "Minoo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72DB1B6FB7B60F80F0514203 /* debug */,
+				3F7D5DAEA7BD85E8F77D4A5E /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+		654D335650DA816A83297E70 /* Build configuration list for PBXNativeTarget "Minoo_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				117A2CFDE1585EBD7027C96F /* debug */,
+				4432992AB5A572D4D9C01FA7 /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D9965AFFD5A76DB5030236C8 /* Project object */;
+}

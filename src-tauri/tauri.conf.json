@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Minoo",
+  "version": "1.0.4",
+  "identifier": "com.minoo.app",
+  "build": {
+    "frontendDist": "../src"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "label": "Minoo",
+        "title": "Minoo",
+        "minWidth": 400,
+        "width": 800,
+        "minHeight": 400,
+        "height": 600,
+        "center": true,
+        "decorations": false,
+        "shadow": false,
+        "resizable": true,
+        "fullscreen": false,
+        "visible": false,
+        "dragDropEnabled": false,
+        "backgroundColor": "#002b36"
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "category": "Productivity",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
