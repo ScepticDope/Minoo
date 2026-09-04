@@ -1,6 +1,6 @@
 [package]
 name = "Minoo"
-version = "1.0.4"
+version = "1.0.5"
 description = "A minimalist cross-platform Markdown note-taking app designed to streamline your workflow and sync seamlessly across your devices, no server required. Stay organised, stay focused and keep your notes private."
 authors = ["ScepticDope"]
 repository = "https://github.com/ScepticDope/Minoo"

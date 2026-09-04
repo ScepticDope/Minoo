@@ -80,8 +80,14 @@ export function positionContextMenu(customContextMenu, event) {
   let x = event.pageX;
   let y = event.pageY;
 
-  // Open to the left of / above the pointer when the menu would overflow.
-  if (x + menuWidth > window.innerWidth - edgeOffset) x -= menuWidth;
+  // Open to the left of the pointer when the menu would overflow the right edge.
+  if (x + menuWidth > window.innerWidth - edgeOffset) {
+    x -= menuWidth;
+
+    if (x < edgeOffset) x = window.innerWidth - menuWidth - edgeOffset;
+  }
+
+  // Open above the pointer when the menu would overflow the bottom edge.
   if (y + menuHeight > window.innerHeight - edgeOffset) y -= menuHeight;
 
   // Keep the menu inside the viewport and below the titlebar.
@@ -161,10 +167,14 @@ export function setupContextMenu() {
     }
   });
 
-  // Hide the custom menu when clicking elsewhere, on keypress, and blur.
-  ["click", "keydown", "blur"].forEach((e) =>
-    window.addEventListener(e, () => (customContextMenu.style.display = "none")),
+  // Hide the custom menu when clicking elsewhere, on keypress, blur, resize and scroll.
+  const hideContextMenu = () => (customContextMenu.style.display = "none");
+
+  ["click", "keydown", "blur", "resize"].forEach((e) =>
+    window.addEventListener(e, hideContextMenu),
   );
+
+  window.addEventListener("scroll", hideContextMenu, true);
 
   // Keep focus and selection where menu was opened, so edit actions still apply to it.
   customContextMenu.addEventListener("mousedown", (event) => event.preventDefault());

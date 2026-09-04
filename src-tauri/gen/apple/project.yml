@@ -58,8 +58,8 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        CFBundleShortVersionString: "1.0.4"
-        CFBundleVersion: "1.0.4"
+        CFBundleShortVersionString: "1.0.5"
+        CFBundleVersion: "1.0.5"
         ITSAppUsesNonExemptEncryption: false
         NSLocalNetworkUsageDescription: Minoo syncs your notes directly with your paired devices on this network. No server and no account is involved.
     entitlements:

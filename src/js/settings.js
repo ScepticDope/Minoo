@@ -1,6 +1,6 @@
 // # The settings modal and reading, applying and saving settings.toml.
 
-import { closeOtherOverlays, editor, isMac, sidebar } from "./dom.js";
+import { closeOtherOverlays, editor, isMac, isMobile, sidebar } from "./dom.js";
 import { appConfirm, showToast } from "./dialogs.js";
 import { focusEditor, remeasureEditor, setEditorLineNumbers } from "./editor.js";
 import { shortcutActions, updateShortcutHints } from "./shortcuts.js";
@@ -181,6 +181,8 @@ function buildShortcutSettings() {
   container.innerHTML = "";
 
   Object.entries(shortcutActions).forEach(([action, definition]) => {
+    if (isMobile && definition.desktopOnly) return;
+
     const field = document.createElement("div");
 
     const heading = document.createElement("h3");
