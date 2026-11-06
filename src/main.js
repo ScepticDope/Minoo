@@ -7,7 +7,7 @@ import { setupDragAndDrop } from "./js/drag-drop.js";
 import { setupTouchGestures } from "./js/gestures.js";
 import { setupEditor } from "./js/editor.js";
 import { setupSidebarNotes, setupRenaming } from "./js/sidebar-notes.js";
-import { setupPickers } from "./js/picker.js";
+import { setupPicker } from "./js/picker.js";
 import { setupSelection } from "./js/selection.js";
 import { openSidebarOnRoomyScreen, setupSettings } from "./js/settings.js";
 import { setupShortcuts } from "./js/shortcuts.js";
@@ -49,7 +49,7 @@ async function initialise() {
   setupSelection();
   setupDragAndDrop();
 
-  setupPickers();
+  setupPicker();
   await setupSync();
 
   setupEditor();

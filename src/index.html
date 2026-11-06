@@ -304,34 +304,18 @@
       </div>
     </div>
 
-    <!-- ## The picker overlays for the command palette and search. -->
-    <div id="command-palette" class="picker">
+    <!-- ## The picker overlay, one input for the command palette and both searches. -->
+    <div id="picker">
       <div class="picker-window">
         <!-- Spellcheck and autocorrect popups steal the arrow keys, so they stay off. -->
         <input
-          id="command-palette-input"
-          placeholder="Type a command..."
+          id="picker-input"
           autocomplete="one-time-code"
           spellcheck="false"
           autocorrect="off"
           autocapitalize="off"
         />
-        <div id="command-palette-results" class="picker-results"></div>
-      </div>
-    </div>
-
-    <div id="search" class="picker">
-      <div class="picker-window">
-        <!-- Spellcheck and autocorrect popups steal the arrow keys, so they stay off. -->
-        <input
-          id="search-input"
-          placeholder="Search this note..."
-          autocomplete="one-time-code"
-          spellcheck="false"
-          autocorrect="off"
-          autocapitalize="off"
-        />
-        <div id="search-results" class="picker-results"></div>
+        <div id="picker-results"></div>
       </div>
     </div>
 

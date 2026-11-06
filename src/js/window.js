@@ -1,7 +1,13 @@
 // # The main window and its custom titlebar.
 
-import { isMobile } from "./dom.js";
-import { flushNoteSave, focusEditor, redoEditor, undoEditor } from "./editor.js";
+import { isLinux, isMobile } from "./dom.js";
+import {
+  flushNoteSave,
+  focusEditor,
+  redoEditor,
+  selectAllEditor,
+  undoEditor,
+} from "./editor.js";
 import { shortcutActions } from "./shortcuts.js";
 import { syncNow } from "./sync.js";
 import {
@@ -141,12 +147,23 @@ async function minimizeWindow() {
 // The drag region cannot move a fullscreen window, so while fullscreen dragging it
 // exits fullscreen instead. A plain double click always zooms the window bounds,
 // like a native titlebar would, regardless of what the maximize button itself does.
+//
+// On Linux Tauri's drag script already zooms on the second press of a double click, so a
+// zoom from here on its release would bounce the window straight back.
 function setupTitlebarDragAndDoubleClick(titlebar, currentWindow) {
   const isDragRegion = (event) =>
     event.button === 0 && event.target.hasAttribute("data-tauri-drag-region");
 
   titlebar.addEventListener("mousedown", (event) => {
-    if (!fullscreen || !isDragRegion(event) || event.detail !== 1) return;
+    if (!fullscreen || !isDragRegion(event)) return;
+
+    // The dblclick below leaves fullscreen, the drag script must not zoom underneath it.
+    if (isLinux && event.detail === 2) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    if (event.detail !== 1) return;
 
     // Only a real drag exits, a plain click (and its pixel of jitter) does nothing.
     const startX = event.screenX;
@@ -171,7 +188,7 @@ function setupTitlebarDragAndDoubleClick(titlebar, currentWindow) {
     if (!isDragRegion(event)) return;
 
     if (fullscreen) toggleFullscreen();
-    else currentWindow.toggleMaximize();
+    else if (!isLinux) currentWindow.toggleMaximize();
   });
 }
 
@@ -228,6 +245,13 @@ export function setupMenuActions() {
     "sync-now": () => syncNow(),
     undo: () => runEditAction(undoEditor, "undo"),
     redo: () => runEditAction(redoEditor, "redo"),
+    // An overlay covers the note, and with the focus behind it typing would replace it.
+    "select-all": () =>
+      runEditAction(() => {
+        if (document.querySelector(".modal.active, #picker.active, #confirm.active")) return;
+
+        selectAllEditor();
+      }, "selectAll"),
   };
 
   // ## Run the handler for the clicked menu item's id.

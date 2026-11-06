@@ -28,7 +28,7 @@ export { defaultKeymap, history, historyKeymap, indentLess, insertTab, redo, sel
 export { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 export { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 export { Compartment, EditorState } from "@codemirror/state";
-export { EditorView, keymap, lineNumbers, placeholder } from "@codemirror/view";
+export { EditorView, drawSelection, keymap, lineNumbers, placeholder } from "@codemirror/view";
 export { styleTags, tags } from "@lezer/highlight";
 ENTRY
 }

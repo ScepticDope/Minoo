@@ -5,7 +5,7 @@
 import { positionContextMenu, updateContextMenuSections } from "./context-menu.js";
 import { sidebarNotes, sidebar } from "./dom.js";
 import { editorView } from "./editor.js";
-import { toggleCommandPalette } from "./picker.js";
+import { togglePicker } from "./picker.js";
 import { toggleSidebar } from "./sidebar.js";
 
 export function setupTouchGestures() {
@@ -70,7 +70,7 @@ export function setupTouchGestures() {
 
       // Swipes only run on the main workspace, not in the overlays.
       swipeStart =
-        event.target.closest(".modal, .picker, #confirm, #context-menu") ||
+        event.target.closest(".modal, #picker, #confirm, #context-menu") ||
         (renaming && event.target.closest("#sidebar"))
           ? null
           : { x: touch.clientX, y: touch.clientY, target: event.target };
@@ -145,8 +145,8 @@ export function setupTouchGestures() {
 
       if (deltaX < 0 && start.x > window.innerWidth - edgeSize) {
         // Swiping in from the right edge opens the command palette.
-        if (!document.getElementById("command-palette").classList.contains("active")) {
-          toggleCommandPalette();
+        if (!document.getElementById("picker").classList.contains("active")) {
+          togglePicker("commands");
         }
       } else if (deltaX < 0 && !sidebarHidden && start.target.closest("#sidebar")) {
         // Swiping the sidebar to the left hides it.

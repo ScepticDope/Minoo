@@ -9,6 +9,7 @@ import {
   EditorView,
   HighlightStyle,
   defaultKeymap,
+  drawSelection,
   history,
   historyKeymap,
   indentLess,
@@ -26,7 +27,7 @@ import {
   undo,
 } from "./codemirror.js";
 import { showToast } from "./dialogs.js";
-import { editor, sidebarNotes } from "./dom.js";
+import { editor, isLinux, isMac, sidebarNotes } from "./dom.js";
 import { ensureCurrentNote } from "./sidebar-notes.js";
 import { getSetting, updateSetting } from "./settings.js";
 import { state } from "./state.js";
@@ -51,7 +52,8 @@ const markdownStyle = HighlightStyle.define([
   { tag: tags.strikethrough, textDecoration: "line-through" },
   { tag: tags.quote, color: "var(--color-text-placeholder)", fontStyle: "italic" },
   { tag: [tags.link, tags.url], color: "var(--color-accent)", textDecoration: "underline" },
-  { tag: tags.monospace, backgroundColor: "var(--color-bg-hover)" },
+  // Translucent, so the selection CodeMirror draws behind the text shows through it.
+  { tag: tags.monospace, backgroundColor: "var(--color-bg-code)" },
   { tag: tags.comment, color: "var(--color-text-muted)" },
   { tag: tags.string, color: "var(--color-text-placeholder)" },
   {
@@ -113,6 +115,11 @@ function createEditorState(text) {
       syntaxHighlighting(markdownStyle),
       lineNumberConfig.of(lineNumberExtension()),
       placeholder("Start typing."),
+
+      // macOS WebKit leaves lines added during a scroll unhighlighted inside a selection,
+      // so CodeMirror draws the highlight and the caret itself there. Linux runs WebKit
+      // as well, so it gets the same. A selection shows no caret, like the native one.
+      isMac || isLinux ? drawSelection({ drawRangeCursor: false }) : [],
 
       // Long lines wrap instead of scrolling sideways, like a note app should.
       EditorView.lineWrapping,
@@ -300,7 +307,7 @@ export function focusEditor() {
   scrollEditorToCaret();
 }
 
-// ## The editor's own undo, redo, and select all, for the context menu.
+// ## The editor's own undo, redo, and select all, for the context menu and the menu bar.
 export function undoEditor() {
   undo(editorView);
 }
@@ -311,6 +318,9 @@ export function redoEditor() {
 
 export function selectAllEditor() {
   selectAll(editorView);
+
+  // Copy works on whatever has the focus, which may not be the editor yet.
+  editorView.focus();
 }
 
 // ## Insert plain text at the caret, for the context menu's paste.

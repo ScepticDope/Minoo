@@ -50,6 +50,7 @@
   --color-bg-primary: #002b36;
   --color-bg-secondary: #00212a;
   --color-bg-hover: #073642;
+  --color-bg-code: rgb(70 153 174 / 10%);
   --color-bg-sidebar: #09414f;
 
   --color-scrollbar-track: #00232d;
@@ -80,6 +81,7 @@
   --color-bg-primary: #241b36;
   --color-bg-secondary: #17101f;
   --color-bg-hover: #2f2444;
+  --color-bg-code: rgb(146 117 194 / 10%);
   --color-bg-sidebar: #33254c;
 
   --color-scrollbar-track: #150e1f;
@@ -107,6 +109,7 @@
   --color-bg-primary: #0d2b45;
   --color-bg-secondary: #081b2d;
   --color-bg-hover: #123655;
+  --color-bg-code: rgb(63 153 229 / 10%);
   --color-bg-sidebar: #07142b;
 
   --color-scrollbar-track: #071827;
@@ -134,6 +137,7 @@
   --color-bg-primary: #1a1a1a;
   --color-bg-secondary: #101010;
   --color-bg-hover: #262626;
+  --color-bg-code: rgb(146 146 146 / 10%);
   --color-bg-sidebar: #171717;
 
   --color-scrollbar-track: #262626;
@@ -545,6 +549,15 @@ select {
 
     word-break: normal;
     overflow-wrap: anywhere;
+  }
+
+  /* The highlight and the caret CodeMirror draws itself on macOS and Linux, see editor.js. */
+  .cm-selectionBackground {
+    background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  }
+
+  .cm-cursor {
+    border-left-color: var(--color-text-primary);
   }
 
   .cm-line {
@@ -1271,8 +1284,8 @@ body.resizing-sidebar {
   }
 }
 
-/* # Pickers, shared by the command palette and the search. */
-.picker {
+/* # The picker, shared by the command palette and both searches. */
+#picker {
   display: none;
   position: fixed;
   top: 0;
@@ -1315,7 +1328,7 @@ body.resizing-sidebar {
       font-family: var(--font-mono);
     }
 
-    .picker-results {
+    #picker-results {
       max-height: 320px;
       overflow-y: auto;
 

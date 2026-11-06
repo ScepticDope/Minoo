@@ -1,6 +1,10 @@
-// # The picker logic for the command palette and the search overlays.
+// # The picker, one overlay for the command palette and both searches.
+// Switching between them only changes the rows below the input, the input itself keeps
+// its place and the focus. Mobile webviews scroll every newly focused element into view,
+// and focusing the editor schedules a scroll of the page as well, so handing the focus
+// around on a switch can push the input off the top of the screen.
 
-import { closeOtherOverlays, isMobile } from "./dom.js";
+import { closeOtherOverlays, isLinux, isMobile } from "./dom.js";
 import { editorView, focusEditor, highlightEditorMatch, openNote } from "./editor.js";
 import { createNewFolder, createNewNote } from "./sidebar-notes.js";
 import {
@@ -16,8 +20,24 @@ import { invoke } from "./tauri.js";
 import { moveToTrash } from "./trash.js";
 import { centerWindow, tileWindow, toggleFullscreen } from "./window.js";
 
-// ## Shared list navigation for the pickers.
-function setupPickerKeys(input, results) {
+const picker = document.getElementById("picker");
+const input = document.getElementById("picker-input");
+const results = document.getElementById("picker-results");
+
+// ## The picker's modes and what the input asks for in each.
+const placeholders = {
+  commands: "Type a command...",
+  note: "Search this note...",
+  all: "Search all notes...",
+};
+
+// ## The picker's state.
+let mode = "commands";
+let searchTimer = null;
+let searchRequest = 0;
+
+// ## Shared list navigation for the picker.
+function setupPickerKeys() {
   input.addEventListener("keydown", (event) => {
     const rows = [...results.querySelectorAll(".item")];
     if (!rows.length) return;
@@ -41,25 +61,14 @@ function setupPickerKeys(input, results) {
   });
 }
 
-// ## Close a picker when clicking next to its window.
-function setupPickerDismiss(picker) {
-  picker.addEventListener("click", (event) => {
-    if (event.target === picker) {
-      picker.classList.remove("active");
-
-      focusEditor();
-    }
-  });
-}
-
 // ## The command palette.
 function paletteCommands() {
   const commands = [
     { name: "New Note", run: createNewNote },
     { name: "New Folder", run: createNewFolder },
     { name: "Toggle Sidebar", run: toggleSidebar },
-    { name: "Search Note", run: () => toggleSearch() },
-    { name: "Search All Notes", run: () => toggleSearch(true) },
+    { name: "Search Note", mode: "note" },
+    { name: "Search All Notes", mode: "all" },
     { name: "Sync Now", run: syncNow },
     { name: "Settings", run: toggleSettings },
     { name: "Config File Location", run: openSettingsLocation },
@@ -68,12 +77,16 @@ function paletteCommands() {
 
   // Mobile has one fullscreen window, so none of these would do anything there.
   if (!isMobile) {
-    commands.push(
-      { name: "Toggle Fullscreen", run: toggleFullscreen },
-      { name: "Center Window", run: centerWindow },
-      { name: "Tile Window Left", run: () => tileWindow() },
-      { name: "Tile Window Right", run: () => tileWindow(true) },
-    );
+    commands.push({ name: "Toggle Fullscreen", run: toggleFullscreen });
+
+    // Linux desktops place windows natively, Wayland does not let an app do it itself.
+    if (!isLinux) {
+      commands.push(
+        { name: "Center Window", run: centerWindow },
+        { name: "Tile Window Left", run: () => tileWindow() },
+        { name: "Tile Window Right", run: () => tileWindow(true) },
+      );
+    }
   }
 
   if (state.currentNotePath && !state.currentNotePath.startsWith(".trash")) {
@@ -107,7 +120,8 @@ function paletteCommands() {
 
 // ## Render the palette commands matching a query.
 function renderCommandResults(query) {
-  const results = document.getElementById("command-palette-results");
+  searchRequest++;
+
   results.innerHTML = "";
 
   const matching = paletteCommands().filter((command) =>
@@ -120,37 +134,19 @@ function renderCommandResults(query) {
     row.className = index === 0 ? "item selected" : "item";
     row.textContent = command.name;
     row.addEventListener("click", () => {
-      toggleCommandPalette();
-      command.run();
+      if (command.mode) {
+        togglePicker(command.mode);
+      } else {
+        closePicker();
+        command.run();
+      }
     });
 
     results.appendChild(row);
   });
 }
 
-// ## Toggle the command palette.
-export function toggleCommandPalette() {
-  const palette = document.getElementById("command-palette");
-  const isOpen = palette.classList.toggle("active");
-
-  if (isOpen) {
-    closeOtherOverlays("command-palette");
-
-    const input = document.getElementById("command-palette-input");
-    input.value = "";
-    renderCommandResults("");
-
-    input.focus();
-  } else {
-    focusEditor();
-  }
-}
-
 // ## Search the currently open note.
-let searchTimer = null;
-let searchRequest = 0;
-let searchAllNotes = false;
-
 function searchCurrentNote(query) {
   if (!state.currentNotePath) return [];
 
@@ -177,11 +173,10 @@ function searchCurrentNote(query) {
 
 // ## Render search matches for a query.
 async function renderSearchResults(query) {
-  const results = document.getElementById("search-results");
   const request = ++searchRequest;
   const matches = !query
     ? []
-    : searchAllNotes
+    : mode === "all"
       ? await invoke("search_notes", { query })
       : searchCurrentNote(query);
 
@@ -204,7 +199,7 @@ async function renderSearchResults(query) {
     row.appendChild(name);
     row.appendChild(preview);
     row.addEventListener("click", async () => {
-      toggleSearch(searchAllNotes);
+      closePicker();
       if (match.path !== state.currentNotePath) await openNote(match.path);
       if (match.line > 0) highlightEditorMatch(match.line, query);
     });
@@ -212,59 +207,79 @@ async function renderSearchResults(query) {
   });
 }
 
-// ## Toggle the search overlay, in note scope or all-notes scope.
-// Triggering an open overlay with the other scope switches it in place, keeping the
-// typed query, so Cmd+F to Cmd+Shift+F widens a search instead of closing it.
-export function toggleSearch(allNotes = false) {
-  const search = document.getElementById("search");
-  const input = document.getElementById("search-input");
+// ## Render the rows of the current mode for the typed query.
+function renderResults() {
+  clearTimeout(searchTimer);
 
-  if (search.classList.contains("active") && searchAllNotes !== allNotes) {
-    searchAllNotes = allNotes;
-    input.placeholder = allNotes ? "Search all notes..." : "Search this note...";
-    renderSearchResults(input.value);
-    input.focus();
+  if (mode === "commands") renderCommandResults(input.value);
+  else renderSearchResults(input.value);
+}
+
+// ## Close the picker and give the focus back to the editor.
+function closePicker() {
+  picker.classList.remove("active");
+
+  focusEditor();
+}
+
+// ## Open the picker in a mode, or close it when it already shows that mode.
+// Triggering an open picker with another mode switches it in place.
+export function togglePicker(nextMode) {
+  const isOpen = picker.classList.contains("active");
+
+  if (isOpen && mode === nextMode) {
+    closePicker();
     return;
   }
 
-  const isOpen = search.classList.toggle("active");
+  // Switching between the searches keeps the typed query, so Cmd+F to Cmd+Shift+F widens
+  // a search instead of losing it. A command filter makes no sense as a query, or the
+  // other way around, so anything else starts empty.
+  if (!isOpen || mode === "commands" || nextMode === "commands") input.value = "";
 
-  if (isOpen) {
-    closeOtherOverlays("search");
+  mode = nextMode;
+  input.placeholder = placeholders[mode];
 
-    searchAllNotes = allNotes;
-    input.placeholder = allNotes ? "Search all notes..." : "Search this note...";
-    input.value = "";
-    document.getElementById("search-results").innerHTML = "";
-    input.focus();
-  } else {
-    focusEditor();
-  }
+  picker.classList.add("active");
+  closeOtherOverlays("picker");
+
+  renderResults();
+
+  // All modes share this list, so each starts at its top.
+  results.scrollTop = 0;
+
+  // Focusing an input that has the focus already still makes iOS scroll to reveal it.
+  if (document.activeElement !== input) input.focus();
 }
 
-// ## Setup both pickers.
-export function setupPickers() {
-  const paletteInput = document.getElementById("command-palette-input");
+// ## Setup the picker.
+export function setupPicker() {
+  // The commands filter right away, the searches wait for a pause in the typing.
+  input.addEventListener("input", () => {
+    clearTimeout(searchTimer);
 
-  paletteInput.addEventListener("input", () => renderCommandResults(paletteInput.value));
-  setupPickerKeys(paletteInput, document.getElementById("command-palette-results"));
-  setupPickerDismiss(document.getElementById("command-palette"));
+    if (mode === "commands") renderResults();
+    else searchTimer = setTimeout(renderResults, 200);
+  });
+
+  setupPickerKeys();
+
+  // A press on a row would blur the input before its click runs, taking the keyboard with
+  // it on mobile, so the rows leave the focus where it is.
+  results.addEventListener("mousedown", (event) => event.preventDefault());
+
+  // Close the picker when clicking next to its window.
+  picker.addEventListener("click", (event) => {
+    if (event.target === picker) closePicker();
+  });
 
   document
     .getElementById("toggle-command-palette")
-    .addEventListener("click", toggleCommandPalette);
-
-  const searchInput = document.getElementById("search-input");
-
-  searchInput.addEventListener("input", () => {
-    clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => renderSearchResults(searchInput.value), 200);
-  });
-  setupPickerKeys(searchInput, document.getElementById("search-results"));
-  setupPickerDismiss(document.getElementById("search"));
-
-  document.getElementById("open-search").addEventListener("click", () => toggleSearch());
+    .addEventListener("click", () => togglePicker("commands"));
+  document
+    .getElementById("open-search")
+    .addEventListener("click", () => togglePicker("note"));
   document
     .getElementById("open-search-all")
-    .addEventListener("click", () => toggleSearch(true));
+    .addEventListener("click", () => togglePicker("all"));
 }

@@ -6,10 +6,10 @@
 // A few keys are fixed on purpose. Esc closes overlays, and F2/Delete work on the
 // selected sidebar entry.
 
-import { sidebar } from "./dom.js";
+import { isLinux, sidebar } from "./dom.js";
 import { focusEditor } from "./editor.js";
 import { createNewFolder, createNewNote, startRename } from "./sidebar-notes.js";
-import { toggleCommandPalette, toggleSearch } from "./picker.js";
+import { togglePicker } from "./picker.js";
 import { selectionTargets } from "./selection.js";
 import { toggleSettings } from "./settings.js";
 import { toggleSidebar } from "./sidebar.js";
@@ -41,21 +41,21 @@ export const shortcutActions = {
     hint: "A quick launcher that can run every action by name.",
     default: "CmdOrCtrl+Shift+P",
     desktopOnly: false,
-    run: () => toggleCommandPalette(),
+    run: () => togglePicker("commands"),
   },
   search: {
     name: "Search Note",
     hint: "Search the text of the open note.",
     default: "CmdOrCtrl+F",
     desktopOnly: false,
-    run: () => toggleSearch(),
+    run: () => togglePicker("note"),
   },
   "search-all": {
     name: "Search All Notes",
     hint: "Search through the names and text of all notes.",
     default: "CmdOrCtrl+Shift+F",
     desktopOnly: false,
-    run: () => toggleSearch(true),
+    run: () => togglePicker("all"),
   },
   "new-note": {
     name: "New Note",
@@ -100,6 +100,14 @@ export const shortcutActions = {
     run: () => tileWindow(true),
   },
 };
+
+// ## Leave window placement out on Linux, whose desktops do it natively.
+// Wayland does not let an app position its own window.
+if (isLinux) {
+  delete shortcutActions["center-window"];
+  delete shortcutActions["tile-left"];
+  delete shortcutActions["tile-right"];
+}
 
 // ## Compare a keydown to a shortcut's key, by name or by the physical key.
 // A keydown reports "ArrowLeft" where a shortcut string may just say "Left", which is
@@ -158,9 +166,7 @@ export function setupShortcuts() {
       }
 
       document.getElementById("settings").classList.remove("active");
-      document
-        .querySelectorAll(".picker.active")
-        .forEach((el) => el.classList.remove("active"));
+      document.getElementById("picker").classList.remove("active");
 
       // Hand focus back to the editor, so stray keystrokes (like Delete) land in
       // the note and not on the sidebar selection.
@@ -194,7 +200,7 @@ function handleSidebarKey(event) {
   if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return false;
 
   if (event.target.closest("input, textarea, [contenteditable]")) return false;
-  if (document.querySelector(".modal.active, .picker.active, #confirm.active")) {
+  if (document.querySelector(".modal.active, #picker.active, #confirm.active")) {
     return false;
   }
   if (sidebar.classList.contains("hidden")) return false;

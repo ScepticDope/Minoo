@@ -13,9 +13,10 @@ export const isIOS =
   (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
 export const isMobile = isAndroid || isIOS;
 export const isMac = !isMobile && /Macintosh/.test(navigator.userAgent);
+export const isLinux = !isMobile && /Linux/.test(navigator.userAgent);
 
 // ## Close the other dialogs, so only one overlay is ever open.
-const overlayIds = ["command-palette", "search", "settings"];
+const overlayIds = ["picker", "settings"];
 
 export function closeOtherOverlays(exceptId) {
   overlayIds

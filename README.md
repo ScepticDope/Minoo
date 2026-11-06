@@ -32,21 +32,21 @@ Shortcuts can be rebound in the settings or emptied to disable them.
 
 ---
 
-| Shortcut         | Action                               |
-| ---------------- | ------------------------------------ |
-| `⌘/Ctrl+B`       | Toggle the sidebar                   |
-| `⌘/Ctrl+N`       | New note                             |
-| `⌘/Ctrl+Shift+N` | New folder                           |
-| `⌘/Ctrl+F`       | Search the open note                 |
-| `⌘/Ctrl+Shift+F` | Search all notes                     |
-| `⌘/Ctrl+Shift+P` | Command palette                      |
-| `⌘/Ctrl+,`       | Settings                             |
-| `F11`            | Fullscreen                           |
-| `⌥/Alt+⌘/Ctrl+C` | Center the window                    |
-| `⌥/Alt+⌘/Ctrl+←` | Tile the window to the left half     |
-| `⌥/Alt+⌘/Ctrl+→` | Tile the window to the right half    |
-| `F2`             | Rename the selected entry            |
-| `Delete`         | Move the selected entry to the trash |
+| Shortcut         | Action                                 |
+| ---------------- | -------------------------------------- |
+| `⌘/Ctrl+B`       | Toggle the sidebar.                    |
+| `⌘/Ctrl+N`       | New note.                              |
+| `⌘/Ctrl+Shift+N` | New folder.                            |
+| `⌘/Ctrl+F`       | Search the open note.                  |
+| `⌘/Ctrl+Shift+F` | Search all notes.                      |
+| `⌘/Ctrl+Shift+P` | Command palette.                       |
+| `⌘/Ctrl+,`       | Settings.                              |
+| `F11`            | Fullscreen.                            |
+| `⌥/Alt+⌘/Ctrl+C` | Center the window. (Not on Linux.)     |
+| `⌥/Alt+⌘/Ctrl+←` | Tile the window left. (Not on Linux.)  |
+| `⌥/Alt+⌘/Ctrl+→` | Tile the window right. (Not on Linux.) |
+| `F2`             | Rename the selected entry.             |
+| `Delete`         | Move the selected entry to the trash.  |
 
 ---
 

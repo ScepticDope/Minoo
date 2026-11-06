@@ -105,8 +105,9 @@ pub fn update_app_menu(app: &AppHandle) -> tauri::Result<()> {
 
     // The predefined edit items keep the standard ⌘X/C/V keys working inside the
     // webview. Undo and redo are custom, since the native ones drive the webview's own
-    // undo stack, which the editor does not use. The frontend sends them to the editor
-    // or to the focused text input.
+    // undo stack, which the editor does not use. Select all is custom too, since the
+    // native one only reaches the lines the editor has drawn. The frontend sends them to
+    // the editor or to the focused text input.
     let edit_menu = SubmenuBuilder::new(app, "Edit")
         .item(
             &MenuItemBuilder::with_id("undo", "Undo")
@@ -122,7 +123,11 @@ pub fn update_app_menu(app: &AppHandle) -> tauri::Result<()> {
         .cut()
         .copy()
         .paste()
-        .select_all()
+        .item(
+            &MenuItemBuilder::with_id("select-all", "Select All")
+                .accelerator("CmdOrCtrl+A")
+                .build(app)?,
+        )
         .build()?;
 
     // All custom items here. The predefined minimize and zoom target the native

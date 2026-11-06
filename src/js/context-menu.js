@@ -24,7 +24,7 @@ let contextMenuEditTarget = null;
 // ## Show only the sections and options fitting the click target.
 // Returns whether any options are left to show.
 export function updateContextMenuSections(event) {
-  const inDialog = !!event.target.closest(".modal, .picker, #confirm");
+  const inDialog = !!event.target.closest(".modal, #picker, #confirm");
   const input = event.target.closest("input, textarea");
   const inEditor = !!event.target.closest("#editor");
   const inSidebar = !inDialog && !!event.target.closest("#sidebar");
